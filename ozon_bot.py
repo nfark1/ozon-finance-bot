@@ -117,14 +117,17 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("📎 Пришли Excel-файл от Ozon — я верну текстовый отчёт с расшифровкой.")
 
+from telegram.ext import ApplicationBuilder, CommandHandler
+import os
+
+async def start(update, context):
+    await update.message.reply_text("Бот работает!")
+
 async def main():
-    import nest_asyncio
-    import asyncio
-    nest_asyncio.apply()
-    app = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.Document.MimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"), handle_file))
-    await app.run_polling()
+    print("🤖 Бот запускается...")
+    application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
+    application.add_handler(CommandHandler("start", start))
+    await application.run_polling()
 
 if __name__ == "__main__":
     import asyncio
